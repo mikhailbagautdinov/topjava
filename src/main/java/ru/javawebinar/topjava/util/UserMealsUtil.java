@@ -3,9 +3,11 @@ package ru.javawebinar.topjava.util;
 import ru.javawebinar.topjava.model.UserMeal;
 import ru.javawebinar.topjava.model.UserMealWithExcess;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -29,7 +31,25 @@ public class UserMealsUtil {
 
     public static List<UserMealWithExcess> filteredByCycles(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         // TODO return filtered list with excess. Implement by cycles
-        return null;
+        List<UserMealWithExcess> mealsExcess = new ArrayList<>();
+        LocalDateTime ldt;
+
+        for (UserMeal meal:meals
+                ) {
+            ldt =meal.getDateTime();
+            //if(new TimeUtil().isBetweenHalfOpen(ldt.toLocalTime(),startTime,endTime))
+            int calories=0;
+                for (UserMeal meal1:meals
+                        ) {
+                    if(meal.getDateTime().toLocalDate().equals(ldt.toLocalDate())){
+                        calories+=meal1.getCalories();
+                    }
+                    System.out.println(calories);
+                }
+                mealsExcess.add(new UserMealWithExcess(ldt,meal.getDescription(),meal.getCalories(),calories>caloriesPerDay));
+            }
+
+        return mealsExcess;
     }
 
     public static List<UserMealWithExcess> filteredByStreams(List<UserMeal> meals, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
